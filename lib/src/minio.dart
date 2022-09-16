@@ -215,6 +215,25 @@ class Minio {
     return result;
   }
 
+  /// Copy the object.
+  Future<MinioResponse> putBucketCors(
+    String bucket,
+    String payload,
+  ) async {
+    MinioInvalidBucketNameError.check(bucket);
+
+    final headers = <String, String>{};
+    headers['content-type'] = 'application/json';
+
+    return await _client.request(
+      method: 'PUT',
+      bucket: bucket,
+      resource: 'cors',
+      payload: payload,
+      headers: headers,
+    );
+  }
+
   /// Find uploadId of an incomplete upload.
   Future<String?> findUploadId(String bucket, String object) async {
     MinioInvalidBucketNameError.check(bucket);
