@@ -223,7 +223,6 @@ class Minio {
     MinioInvalidBucketNameError.check(bucket);
 
     final headers = <String, String>{};
-    headers['content-type'] = 'application/json';
 
     return await _client.request(
       method: 'PUT',
