@@ -1157,4 +1157,22 @@ class Minio {
       acl: retrieveAcls ? await getObjectACL(bucket, object) : null,
     );
   }
+
+  Future<bool> objectExists(String bucket, String object) async {
+    MinioInvalidBucketNameError.check(bucket);
+    MinioInvalidObjectNameError.check(object);
+    final resp = await _client.request(
+      method: 'HEAD',
+      bucket: bucket,
+      object: object,
+    );
+    if (resp.statusCode == 200) {
+      return true;
+    } else if (resp.statusCode == 404) {
+      return false;
+    } else {
+      throw MinioS3Error(
+          '200 or 404 expected, got ${resp.statusCode}', null, resp);
+    }
+  }
 }
